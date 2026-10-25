@@ -3,116 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./assets/Picture/icon.png">
     <title>Siha Studio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            color: #fff;
-            font-family: sans-serif;
-        }
-
-        /* 第一屏：首页 */
-        .page-home {
-            height: 100vh;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        .page-home::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("./assets/Picture/bg1.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            /* 控制清晰度，blur越大越模糊，0px=原图 */
-            filter: blur(1.5px);
-            /* 可选：亮度调整 */
-            
-            transform: scale(1.05); /* 消除模糊后边缘白边 */
-            z-index: -1;
-        }
-        .home-text {
-            font-size: 120px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
-        }
-
-        /* 第二屏：项目页 */
-        .page-projects {
-            height: 100vh;
-            background-image: url("./assets/Picture/bg2.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-        }
-
-        /* 左上角导航 My Projects，入场渐变动画 */
-        .nav-project {
-            position: absolute;
-            top: 32px;
-            left: 32px;
-            font-size: 55px;
-            font-weight: bold;
-            /* 文字渐变 */
-            background: linear-gradient(90deg, #60a5fa, #a78bfa);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-        }
-        /* 动画激活类 */
-        .nav-project.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* 正文文本区域 */
-        .project-content {
-            position: relative;
-            top: 180px;
-            max-width: 800px;
-            margin: 60px auto 0;
-            font-size: 27px;
-            line-height: 1.8;
-            white-space: pre-wrap; /* 保留txt里换行、空格 */
-            color: #e7dede;
-        }
-
-        /* ====== 第二屏底部中央图片 ====== */
-        .bottom-image-wrap {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-        }
-        .bottom-image-wrap img {
-            max-width: 400px; /* 控制图片最大宽度，手机自动缩小 */
-            width: 100%;
-        }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <ul class="nav-list">
+            <li class="nav-item has-dropdown">
+                <a href="#" class="nav-link">Pages</a>
+                <ul class="dropdown">
+                    <li><a href="#page-home" class="dropdown-item">首页</a></li>
+                    <li><a href="#page-projects" class="dropdown-item">项目介绍</a></li>
+                </ul>
+            </li>
+            <li class="nav-item has-dropdown">
+                <a href="#" class="nav-link">Projects</a>
+                <ul class="dropdown">
+                    <li><a href="#" class="dropdown-item">Departure Engine</a></li>
+                    <li><a href="#" class="dropdown-item">飞行模拟器</a></li>
+                    <li><a href="#" class="dropdown-item">科创作品</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
     <!-- 第一屏 -->
-    <section class="page-home">
+    <section class="page-section page-home active" data-index="0">
         <div class="home-text">你好, 我是Siha</div>
     </section>
 
     <!-- 第二屏 -->
-    <section class="page-projects">
+    <section class="page-section page-projects" data-index="1">
         <div class="nav-project">Introduction</div>
         <div class="project-content" id="txtContent">加载中...</div>
 
@@ -122,32 +45,6 @@
         </div>
     </section>
 
-<script>
-const navEl = document.querySelector('.nav-project');
-const projectsSection = document.querySelector('.page-projects');
-
-const contentDom = document.getElementById('txtContent');
-
-// 加载 content.txt
-fetch('/assets/txt/self-intro.txt')
-.then(res => res.text())
-.then(text => {
-    contentDom.textContent = text;
-})
-.catch(err => {
-    contentDom.textContent = "读取 content.txt 失败，请确认文件放在和 index.html 同一个文件夹";
-    console.error(err);
-})
-
-window.addEventListener('scroll', () => {
-    // 判断项目区块是否进入视口
-    const rect = projectsSection.getBoundingClientRect();
-    if(rect.top < window.innerHeight * 0.6){
-        navEl.classList.add('show');
-    }else{
-        navEl.classList.remove('show');
-    }
-})
-</script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,271 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    color: #fff;
+    font-family: sans-serif;
+    /* PPT 翻页滚动吸附 */
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+}
+
+/* ====== 顶部导航栏 ====== */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 30, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 32px;
+    height: 56px;
+    margin: 0;
+}
+.nav-item {
+    position: relative;
+}
+.nav-link {
+    display: block;
+    padding: 0 20px;
+    line-height: 56px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    transition: color 0.25s ease;
+}
+.nav-link:hover {
+    color: #fff;
+}
+/* 下拉箭头 */
+.nav-item.has-dropdown > .nav-link::after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 6px;
+    vertical-align: middle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    transition: transform 0.25s ease;
+}
+.nav-item.has-dropdown:hover > .nav-link::after {
+    transform: rotate(180deg);
+}
+/* 下拉菜单 */
+.dropdown {
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 160px;
+    background: rgba(15, 15, 40, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.nav-item.has-dropdown:hover > .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.dropdown-item {
+    display: block;
+    padding: 8px 18px;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+.dropdown-item:hover {
+    color: #fff;
+    background: rgba(96, 165, 250, 0.15);
+}
+
+/* ====== 通用页面容器 ====== */
+.page-section {
+    scroll-snap-align: start;
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    padding-top: 56px; /* 为固定导航栏留出空间 */
+    /* 默认淡出 + 模糊状态 */
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(1.02);
+    transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
+}
+/* 当前激活页面：完全可见 */
+.page-section.active {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+}
+
+/* ====== 第一屏：首页 ====== */
+.page-home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page-home::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("./assets/Picture/bg1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(1.5px);
+    transform: scale(1.05);
+    z-index: -1;
+}
+.home-text {
+    font-size: 120px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+}
+
+/* ====== 第二屏：项目页 ====== */
+.page-projects {
+    background-image: url("./assets/Picture/bg2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* 左上角导航，入场渐变动画 */
+.nav-project {
+    position: absolute;
+    top: 92px;
+    left: 32px;
+    font-size: 55px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+}
+.nav-project.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* 正文文本区域 */
+.project-content {
+    position: relative;
+    top: 220px;
+    max-width: 800px;
+    margin: 60px auto 0;
+    font-size: 27px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: #e7dede;
+}
+
+/* 第二屏底部中央图片 */
+.bottom-image-wrap {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.bottom-image-wrap img {
+    max-width: 400px;
+    width: 100%;
+}
+
+/* ========== 响应式适配 ========== */
+
+/* 平板及以下 */
+@media (max-width: 1024px) {
+    .home-text {
+        font-size: 80px;
+    }
+    .nav-project {
+        font-size: 40px;
+        top: 76px;
+        left: 24px;
+    }
+    .project-content {
+        top: 180px;
+        font-size: 22px;
+        margin: 40px auto 0;
+    }
+    .bottom-image-wrap img {
+        max-width: 320px;
+    }
+}
+
+/* 手机 */
+@media (max-width: 768px) {
+    .home-text {
+        font-size: 42px;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        padding: 0 16px;
+        text-align: center;
+    }
+    .nav-project {
+        font-size: 28px;
+        top: 72px;
+        left: 16px;
+    }
+    .project-content {
+        top: 0;
+        max-width: 92%;
+        margin: 80px auto 120px;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+    .bottom-image-wrap {
+        bottom: 20px;
+    }
+    .bottom-image-wrap img {
+        max-width: 260px;
+    }
+}
+
+/* 小屏手机 */
+@media (max-width: 390px) {
+    .home-text {
+        font-size: 32px;
+    }
+    .nav-project {
+        font-size: 22px;
+        top: 64px;
+        left: 12px;
+    }
+    .project-content {
+        font-size: 14px;
+        margin: 60px 8% 100px;
+    }
+    .bottom-image-wrap img {
+        max-width: 200px;
+    }
+}
