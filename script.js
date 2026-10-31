@@ -52,7 +52,7 @@ function scrollToSection(target) {
     }
 }
 
-document.querySelectorAll('.dropdown-item[href^="#"]').forEach(link => {
+document.querySelectorAll('.dropdown-item[href^="#"], .nav-brand[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
         e.preventDefault();
         scrollToSection(link.getAttribute('href'));
